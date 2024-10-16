@@ -1,0 +1,17 @@
+node_modules# Node.js modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Build directories
+dist/
+build/
+
+# Environment variable files
+.env
+
+# Other files to ignore
+.DS_Store
