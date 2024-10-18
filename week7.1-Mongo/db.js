@@ -10,8 +10,10 @@ const User = new Schema({
 const Todo = new Schema({
     userId:ObjectId,
     title:String,
-    done:Boolean
-})
+    done:Boolean,
+    createdAt:{type:Date , default:Date.now},
+    dueDate: { type: Date }
+});
 
 const UserModel= new mongoose.model("users",User);
 const TodoModel = new mongoose.model("todos", Todo);
