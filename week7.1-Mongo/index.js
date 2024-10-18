@@ -15,14 +15,15 @@ app.post('/signup' ,async (req,res)=>{
     if(user ){
         return res.status(409).json({ msg: "User Already Exists", success: false });
     }
-    const newUserModel= await UserModel.create({
+    const hashedPass=await bcrypt.hash(password, 10);
+    await UserModel.create({
         name : name,
         email:email,
-        password:password
+        password:hashedPass
     })
 
-    newUserModel.password=await bcrypt.hash(password, 10);
-    await newUserModel.save()
+    
+    
     res.json({
         msg:"You are successfully signed up"
     })
@@ -31,10 +32,16 @@ app.post('/signup' ,async (req,res)=>{
 app.post('/login',async(req,res)=>{
     const {email, password} = req.body;
     const response= await UserModel.findOne({
-        email:email,
-        password:password
+        email:email
     })
-    if(response){
+    if(!response){
+        res.status(403).json({
+            msg:"USer noe exisr"
+        })
+    }
+
+    const passMatch= await bcrypt.compare(password,respone.password)
+    if(passMatch){
         const token = jwt.sign({
             id:response._id.toString()
         }, JWT_SECRET);
