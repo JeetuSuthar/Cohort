@@ -1,14 +1,14 @@
 import { Router } from "express"
-import { AdminModel } from "../db.js"
+import { AdminModel, CourseModel } from "../db.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from 'dotenv';
-import { JWT_ADMIN_PASSWORD } from "../config.js";
+//import { JWT_ADMIN_PASSWORD } from "../config.js";
 import { adminMiddleware } from "../Middlewares/adminAuth.js";
 dotenv.config();
 const AdminRouter = Router()
 
-
+const JWT_ADMIN_PASSWORD="nigga1233"
 
 AdminRouter.post('/signup',  async (req, res) => {
     try {
@@ -40,50 +40,97 @@ AdminRouter.post('/signup',  async (req, res) => {
 AdminRouter.post('/login', async (req, res) => {
 
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
 
-        const admin = await AdminModel.findOne({ email })
+        // Find the admin by email
+        const admin = await AdminModel.findOne({ email });
+        
+        // Check if the admin exists
         if (!admin) {
-            console.log("User doesnt Exists")
+            return res.status(404).json({
+                msg: "Admin doesn't exist"
+            });
         }
 
-        const CheckPass = await bcrypt.compare(password, admin.password)
+        // Compare the password
+        const CheckPass = await bcrypt.compare(password, admin.password);
         if (CheckPass) {
-            const token = jwt.sign({
-                id: admin._id.toString()
-            },JWT_ADMIN_PASSWORD)
+            const token = jwt.sign(
+                { id: admin._id.toString() },
+                process.env.JWT_ADMIN_PASSWORD // Use your secret key from environment variables
+            );
 
-            res.json({
+            return res.json({
                 token,
                 msg: "Login Successfully"
-            })
+            });
         } else {
-            res.status(403).json({
-                msg: "Incorrect Credential"
-            })
+            return res.status(403).json({
+                msg: "Incorrect Credentials"
+            });
         }
     } catch (err) {
-        res.status(403).json({
-            msg: "Invalid Creds"
-        })
+        console.error(err); // Log the error for debugging
+        return res.status(500).json({
+            msg: "Internal Server Error"
+        });
     }
+
 })
-AdminRouter.post('/course',adminMiddleware, (req, res) => {
+AdminRouter.post('/course', adminMiddleware, async (req, res) => {
+    const adminId = req.userId;
+    const { title, description, imageUrl, price } = req.body;
+
+    try {
+        const course = await CourseModel.create({
+            title,
+            description,
+            imageUrl,
+            price,
+            creatorId: adminId
+        });
+
+        res.json({
+            msg: "Created the course",
+            courseId: course._id
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error creating course", error: error.message });
+    }
+});
+
+AdminRouter.put('/course',adminMiddleware, async(req, res) => {
+    const adminId = req.userId;
+    const { title, description, imageUrl, price, courseId } = req.body;
+
+    const course = await CourseModel.updateOne({
+        _id:courseId,
+        creatorId:adminId
+    },{
+        title,
+        description,
+        imageUrl,
+        price
+    })
     res.json({
-        msg: "working"
+        message: "Course updated",
+        courseId: course._id
     })
 })
-AdminRouter.put('/course', (req, res) => {
+ 
+AdminRouter.get('/course/bulk',adminMiddleware, async(req, res) => {
+    const adminId=req.userId;
+    const courses = await CourseModel.find({
+        creatorId: adminId 
+    });
+
     res.json({
-        msg: "working"
+        message: "Course updated",
+        courses
     })
 })
 
-AdminRouter.get('/course/bulk', (req, res) => {
-    res.json({
-        msg: "working"
-    })
-})
 export {
     AdminRouter
 }

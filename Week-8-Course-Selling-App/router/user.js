@@ -1,14 +1,14 @@
 import {Router } from "express"
 
-import { UserModel } from "../db.js"
+import { CourseModel, PurchaseModel, UserModel } from "../db.js"
 const UserRouter = Router()
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from 'dotenv';
-import { JWT_USER_PASSWORD } from "../config.js"
+//import { JWT_USER_PASSWORD } from "../config.js"
 import { userMiddleware } from "../Middlewares/userAuth.js"
 dotenv.config();
-
+const JWT_USER_PASSWORD="wigga1234"
 
 UserRouter.post('/signup', async(req,res)=>{
     try {
@@ -68,9 +68,26 @@ UserRouter.post('/login',async(req,res)=>{
     }
 })
 
-UserRouter.get('/purchases',(req,res)=>{
+UserRouter.get('/purchases',userMiddleware,async(req,res)=>{
+    const userId = req.userId;
+
+    const purchases = await PurchaseModel.find({
+        userId,
+    });
+
+    let purchasedCourseIds = [];
+
+    for (let i = 0; i<purchases.length;i++){ 
+        purchasedCourseIds.push(purchases[i].courseId)
+    }
+
+    const coursesData = await CourseModel.find({
+        _id: { $in: purchasedCourseIds }
+    })
+
     res.json({
-        msg:"working"
+        purchases,
+        coursesData
     })
 })
 export {

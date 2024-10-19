@@ -1,16 +1,29 @@
 import {Router} from "express"
+import { userMiddleware } from "../Middlewares/userAuth.js";
+import { CourseModel, PurchaseModel } from "../db.js";
 const CourseRouter = Router()
 
-CourseRouter.post('/purchase', (req, res) => {
+CourseRouter.post('/purchase',userMiddleware, async(req, res) => {
+    const userId = req.userId;
+    const courseId = req.body.courseId;
+    
+    // should check that the user has actually paid the price
+    await PurchaseModel.create({
+        userId,
+        courseId
+    })
+
     res.json({
-        msg: "Course purchase endpoint working"
-    });
+        message: "You have successfully bought the course"
+    })
 });
 
-CourseRouter.get('/preview', (req, res) => {
+CourseRouter.get('/preview', async(req, res) => {
+    const courses = await CourseModel.find({});
+
     res.json({
-        msg: "Course preview endpoint working"
-    });
+        courses
+    })
 });
 
 export{
