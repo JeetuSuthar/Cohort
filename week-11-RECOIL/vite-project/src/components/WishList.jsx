@@ -1,9 +1,10 @@
-import React from 'react';
+
 import { useRecoilState } from 'recoil';
 import { cartItemState } from '../store/cartItemState'; // Importing the cart state atom
 
 function WishList() {
   const [cartItems, setCartItems] = useRecoilState(cartItemState); // Recoil state for the cart
+ 
   const items = [
     {
       id: 1,
