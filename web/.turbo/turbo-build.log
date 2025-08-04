@@ -1,0 +1,18 @@
+[?25l[2J[m[H]0;C:\WINDOWS\system32\cmd.exe [?25h[?25l
+> web@0.1.0 build C:\Users\Jeetu Suthar\OneDrive\Attachments\Desktop\Projects\draw-app\apps\web
+> next build[5;1H[?25h[?25l   [38;2;173;127;168m[1m▲ Next.js 15.1.0[7;1H[?25h[m [37m[1m [m Creating an optimized production build ...
+ [32m[1m✓[m Compiled successfully
+ [37m[1m [m Linting and checking validity of types  [36m.[?25l[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m[K[107C [37m[1m [m Linting and checking validity of types  [36m...[m[K[107C [37m[1m [m Linting and checking validity of types  [36m.[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m[K[107C [37m[1m [m Linting and checking validity of types  [36m...[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m [37m[1m [m Linting and checking validity of types  [36m..[K[62C[m [37m[1m [m Linting and checking validity of types  [36m...[K[61C[m [37m[1m [m Linting and checking validity of types  [36m.[K[63C[m[31m[9;45HFailed to compile.[36m[11;1H.next/types/app/room/[slug]/page.ts[m:[33m34[m:[33m29[m
+[31m[1mType error[m: Type '{ params: { slug: string; }; }' does not satisfy the constraint 'PageProps'.[K[13C
+  Types of property 'params' are incompatible.[61C
+    Type '{ slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, fin
+[10;107Hnally, [Symbol.toStringTag][81C
+[107C
+  [90m32 |[K[101C[m
+  [90m33 | // Check the prop type of the entry function[K[56C[m
+[31m[1m>[90m[22m 34 | [mcheckFields[33m<Diff<PageProps, FirstArg<TEntry[m[[32m'default'[m][33m>, [32m'default'[33m>>[m()[K[30C
+     [90m|[29X[31m[1m[29C^[m[K[71C
+  [90m35 |[K[101C[m
+  [90m36 | // Check the arguments and return type of the generateMetadata function[K[29C[m
+  [90m37 | [36mif [m([32m'generateMetadata' [36min [mentry) {[K[66C
+[107C[?25h[30m[41m ELIFECYCLE [m [31mCommand failed with exit code 1.[m
